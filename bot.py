@@ -13,7 +13,7 @@ async def teste(app):
 
 async def main():
     app = Application.builder().token(TOKEN).build()
-    scheduler.add_job(teste, "cron", hour=0, minute=22, args=[app])
+    scheduler.add_job(teste, "cron", hour=0, minute=34, args=[app])
     scheduler.start()
     print("Bot a correr...")
     async with app:
