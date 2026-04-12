@@ -11,7 +11,9 @@ CHAT_ID = os.environ.get("CHAT_ID")
 scheduler = AsyncIOScheduler(timezone="Europe/Lisbon")
 pt_holidays = holidays.Portugal()
 
-# ------------------ FUNÇÃO AUXILIAR ------------------
+THREAD_ID = 6364  # 👈 teu tópico
+
+# ------------------ FUNÇÕES AUXILIARES ------------------
 
 def is_holiday_or_weekend(date):
     return date.weekday() >= 5 or date in pt_holidays
@@ -19,12 +21,16 @@ def is_holiday_or_weekend(date):
 def is_eve_of_holiday(date):
     return (date + timedelta(days=1)) in pt_holidays
 
-# ------------------ MENSAGENS ------------------
+# ------------------ ENVIO ------------------
 
 async def send_msg(app, text):
-    await app.bot.send_message(chat_id=CHAT_ID, text=text)
+    await app.bot.send_message(
+        chat_id=CHAT_ID,
+        text=text,
+        message_thread_id=THREAD_ID
+    )
 
-# ------------------ SESSÕES FIXAS (12:30 e 17:30) ------------------
+# ------------------ SESSÕES FIXAS ------------------
 
 async def aviso_1230(app):
     await send_msg(app, """🚨 DAQUI A 30 MINUTOS!
@@ -71,9 +77,7 @@ Podem começar a enviar 👠🔥""")
 # ------------------ SESSÃO 21:00 ------------------
 
 async def aviso_21(app):
-    hoje = datetime.now().date()
-
-    if datetime.now().weekday() in [0,2,4]:  # seg, qua, sex
+    if datetime.now().weekday() in [0,2,4]:
         await send_msg(app, """🚨 DAQUI A 30 MINUTOS!
 
 👠 SESSÃO 5 LINKS • 5 FAVORITOS
@@ -112,7 +116,6 @@ async def aviso_noturna(app):
     hoje = datetime.now().date()
 
     if datetime.now().weekday() in [4,5] or is_eve_of_holiday(hoje):
-        # sexta, sábado ou véspera feriado
         await send_msg(app, """🚨 DAQUI A 30 MINUTOS!
 
 👠 SESSÃO ARMÁRIO • 10 FAVORITOS
@@ -128,9 +131,18 @@ Preparem os links 🥳🔥""")
 Preparem os links 🥳🔥""")
 
 async def go_noturna(app):
-    hoje = datetime.now().date()
+    agora = datetime.now()
+    hoje = agora.date()
 
-    if datetime.now().weekday() in [4,5] or is_eve_of_holiday(hoje):
+    # controlo horário correto
+    if agora.minute == 30:
+        if not (agora.weekday() in [4,5] or is_eve_of_holiday(hoje)):
+            return
+    else:
+        if (agora.weekday() in [4,5] or is_eve_of_holiday(hoje)):
+            return
+
+    if agora.weekday() in [4,5] or is_eve_of_holiday(hoje):
         await send_msg(app, """🚀 GO!
 
 🔗 SESSÃO ARMÁRIO
@@ -148,12 +160,15 @@ Podem começar a enviar 👠🔥""")
 Podem começar a enviar 👠🔥""")
 
 async def stop_noturna(app):
-    hoje = datetime.now().date()
+    agora = datetime.now()
+    hoje = agora.date()
 
     if is_holiday_or_weekend(hoje):
-        hora = "10:30"
+        if agora.hour != 10 or agora.minute != 30:
+            return
     else:
-        hora = "09:00"
+        if agora.hour != 9 or agora.minute != 0:
+            return
 
     await send_msg(app, """🛑 SESSÃO ENCERRADA!
 
@@ -185,6 +200,7 @@ async def main():
     # NOTURNA
     scheduler.add_job(aviso_noturna, "cron", hour=22, minute=30, args=[app])
     scheduler.add_job(go_noturna, "cron", hour=23, minute=0, args=[app])
+    scheduler.add_job(go_noturna, "cron", hour=23, minute=30, args=[app])
     scheduler.add_job(stop_noturna, "cron", hour=9, minute=0, args=[app])
     scheduler.add_job(stop_noturna, "cron", hour=10, minute=30, args=[app])
 
