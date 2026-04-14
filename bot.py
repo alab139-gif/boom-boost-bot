@@ -1,4 +1,3 @@
- ```python
 import os
 import asyncio
 from datetime import datetime, timedelta
@@ -13,11 +12,15 @@ THREAD_ID = 6364
 scheduler = AsyncIOScheduler(timezone="Europe/Lisbon")
 pt_holidays = holidays.Portugal()
 
+# ------------------ FUNÇÕES AUXILIARES ------------------
+
 def is_holiday_or_weekend(date):
     return date.weekday() >= 5 or date in pt_holidays
 
 def is_eve_of_holiday(date):
     return (date + timedelta(days=1)) in pt_holidays
+
+# ------------------ ENVIO ------------------
 
 async def send_msg(app, text):
     await app.bot.send_message(
@@ -26,7 +29,8 @@ async def send_msg(app, text):
         message_thread_id=THREAD_ID
     )
 
-# MENSAGEM STOP (igual para todos)
+# ------------------ MENSAGEM STOP ------------------
+
 async def stop(app):
     await send_msg(app, """🛑 SESSÃO ENCERRADA!
 
@@ -35,7 +39,8 @@ Obrigada pela vossa participação 🥳
 Ponham os favoritos em ordem ✅
 Estamos aqui todos para o mesmo 🙌""")
 
-# 12:30
+# ------------------ 12:30 ------------------
+
 async def go_1230(app):
     await send_msg(app, """🚀 GO!
 
@@ -45,7 +50,8 @@ async def go_1230(app):
 
 Podem começar a enviar 👠🔥""")
 
-# 17:30
+# ------------------ 17:30 ------------------
+
 async def go_1730(app):
     await send_msg(app, """🚀 GO!
 
@@ -55,9 +61,12 @@ async def go_1730(app):
 
 Podem começar a enviar 👠🔥""")
 
-# 21:00 - depende do dia
+# ------------------ 21:00 ------------------
+
 async def go_21(app):
-    dia = datetime.now().weekday()
+    agora = datetime.now()
+    dia = agora.weekday()
+
     if dia in [0, 2, 4]:  # seg, qua, sex
         await send_msg(app, """🚀 GO!
 
@@ -66,7 +75,7 @@ async def go_21(app):
 ⏰ 21:00 – 22:00
 
 Podem começar a enviar 👠🔥""")
-    else:  # ter, qui, sab, dom
+    else:
         await send_msg(app, """🚀 GO!
 
 🔗 SESSÃO ARMÁRIO
@@ -75,10 +84,13 @@ Podem começar a enviar 👠🔥""")
 
 Podem começar a enviar 👠🔥""")
 
-# NOTURNA 23:00 - só dom, seg, ter, qua, qui (exceto vésperas feriado)
+# ------------------ NOTURNA 23:00 ------------------
+
 async def go_noturna_util(app):
-    hoje = datetime.now().date()
-    dia = datetime.now().weekday()
+    agora = datetime.now()
+    hoje = agora.date()
+    dia = agora.weekday()
+
     if dia in [0, 1, 2, 3, 6] and not is_eve_of_holiday(hoje):
         await send_msg(app, """🚀 GO!
 
@@ -88,10 +100,13 @@ async def go_noturna_util(app):
 
 Podem começar a enviar 👠🔥""")
 
-# NOTURNA 23:30 - só sex, sab e vésperas feriado
+# ------------------ NOTURNA 23:30 ------------------
+
 async def go_noturna_fds(app):
-    hoje = datetime.now().date()
-    dia = datetime.now().weekday()
+    agora = datetime.now()
+    hoje = agora.date()
+    dia = agora.weekday()
+
     if dia in [4, 5] or is_eve_of_holiday(hoje):
         await send_msg(app, """🚀 GO!
 
@@ -101,17 +116,25 @@ async def go_noturna_fds(app):
 
 Podem começar a enviar 👠🔥""")
 
-# FECHO NOTURNA 09:00 - dias úteis
+# ------------------ FECHO 09:00 ------------------
+
 async def stop_noturna_util(app):
     hoje = datetime.now().date()
-    if not is_holiday_or_weekend(hoje):
+    ontem = hoje - timedelta(days=1)
+
+    if not is_holiday_or_weekend(ontem) and not is_eve_of_holiday(ontem):
         await stop(app)
 
-# FECHO NOTURNA 10:30 - fins de semana e feriados
+# ------------------ FECHO 10:30 ------------------
+
 async def stop_noturna_fds(app):
     hoje = datetime.now().date()
-    if is_holiday_or_weekend(hoje):
+    ontem = hoje - timedelta(days=1)
+
+    if is_holiday_or_weekend(ontem) or is_eve_of_holiday(ontem):
         await stop(app)
+
+# ------------------ MAIN ------------------
 
 async def main():
     app = Application.builder().token(TOKEN).build()
@@ -135,6 +158,7 @@ async def main():
     scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
 
     scheduler.start()
+
     print("Bot a correr...")
 
     async with app:
@@ -144,4 +168,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-```
