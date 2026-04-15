@@ -66,7 +66,7 @@ async def go_noturna_util(app):
         await send_msg(app, """🚀 GO!
 
 🔗 ROUPEIRO • ARMARIO • DRESSING
-♥️ 10 FAVS
+♥️ 5 FAVS
 ⏰ 23:00 – 09:00""")
 
 async def go_noturna_fds(app):
