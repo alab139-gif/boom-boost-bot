@@ -113,13 +113,15 @@ async def go_noturna_fds(app):
 async def stop_noturna_util(app):
     hoje = datetime.now().date()
     ontem = hoje - timedelta(days=1)
-    if not is_holiday_or_weekend(ontem) and not is_eve_of_holiday(ontem):
+    dia_ontem = ontem.weekday()
+    if dia_ontem in [0, 1, 2, 3, 6] and not is_eve_of_holiday(ontem):
         await stop(app)
 
 async def stop_noturna_fds(app):
     hoje = datetime.now().date()
     ontem = hoje - timedelta(days=1)
-    if is_holiday_or_weekend(ontem) or is_eve_of_holiday(ontem):
+    dia_ontem = ontem.weekday()
+    if dia_ontem in [4, 5] or is_eve_of_holiday(ontem):
         await stop(app)
 
 # ------------------ MAIN ------------------
@@ -144,36 +146,6 @@ async def main():
     scheduler.add_job(stop, "cron", hour=22, minute=0, args=[app])
 
     # Noturnas
-    scheduler.add_job(go_noturna_util, "cron", hour=23, minute=0, args=[app])
-    scheduler.add_job(go_noturna_fds, "cron", hour=23, minute=30, args=[app])
-    scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
-    scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
-
-    scheduler.start()
-    print("Bot a correr...")
-
-    async with app:
-        await app.start()
-        while True:
-            await asyncio.sleep(60)
-
-if __name__ == "__main__":
-    asyncio.run(main())    ontem = hoje - timedelta(days=1)
-    if is_holiday_or_weekend(ontem) or is_eve_of_holiday(ontem):
-        await stop(app)
-
-async def main():
-    app = Application.builder().token(TOKEN).build()
-
-    scheduler.add_job(go_1230, "cron", hour=12, minute=30, args=[app])
-    scheduler.add_job(stop, "cron", hour=13, minute=0, args=[app])
-
-    scheduler.add_job(go_1730, "cron", hour=17, minute=30, args=[app])
-    scheduler.add_job(stop, "cron", hour=18, minute=0, args=[app])
-
-    scheduler.add_job(go_21, "cron", hour=21, minute=0, args=[app])
-    scheduler.add_job(stop, "cron", hour=22, minute=0, args=[app])
-
     scheduler.add_job(go_noturna_util, "cron", hour=23, minute=0, args=[app])
     scheduler.add_job(go_noturna_fds, "cron", hour=23, minute=30, args=[app])
     scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
