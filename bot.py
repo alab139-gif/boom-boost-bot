@@ -1,12 +1,12 @@
-import os
 import asyncio
 from datetime import datetime, timedelta
 from telegram.ext import Application
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import holidays
 
-TOKEN = os.environ.get("BOT_TOKEN")
-CHAT_ID = os.environ.get("CHAT_ID")
+# 🔴 METE AQUI OS TEUS DADOS
+TOKEN = "8656939827:AAGxFebTouJhQtUVv8YrWkraI07dojvMzTw"
+CHAT_ID = -1003758317502
 THREAD_ID = 6364
 
 scheduler = AsyncIOScheduler(timezone="Europe/Lisbon")
@@ -30,7 +30,7 @@ async def stop(app):
 
 🙏🏻🫶🏻""")
 
-# ------------------ 12:30 (APENAS DIAS ÚTEIS) ------------------
+# ------------------ 12:30 (DIAS ÚTEIS) ------------------
 
 async def go_1230(app):
     hoje = datetime.now().date()
@@ -46,7 +46,7 @@ async def stop_1300(app):
     if not is_holiday_or_weekend(hoje):
         await stop(app)
 
-# ------------------ NOVA SESSÃO FDS/FERIADOS ------------------
+# ------------------ 14:30 (FDS/FERIADOS) ------------------
 
 async def go_1430(app):
     hoje = datetime.now().date()
@@ -70,6 +70,9 @@ async def go_1730(app):
 🔗 ROUPEIRO • ARMARIO • DRESSING
 ❤️ 5 FAVS
 ⏰ 17:30 – 18:00""")
+
+async def stop_1800(app):
+    await stop(app)
 
 # ------------------ 21:00 ------------------
 
@@ -136,7 +139,7 @@ async def main():
     scheduler.add_job(stop_1500, "cron", hour=15, minute=0, args=[app])
 
     scheduler.add_job(go_1730, "cron", hour=17, minute=30, args=[app])
-    scheduler.add_job(stop, "cron", hour=18, minute=0, args=[app])
+    scheduler.add_job(stop_1800, "cron", hour=18, minute=0, args=[app])
 
     scheduler.add_job(go_21, "cron", hour=21, minute=0, args=[app])
     scheduler.add_job(stop, "cron", hour=22, minute=0, args=[app])
