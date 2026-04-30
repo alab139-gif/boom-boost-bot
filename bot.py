@@ -84,12 +84,18 @@ async def go_21(app):
 🔗 5 LINKS • ENLACES • LIENS
 ♥️ 5 FAVS
 ⏰ 21:00 – 22:00""")
+     # RESTO DOS DIAS → ROUPEIRO (imagem + texto)
     else:
-        await send_msg(app, """🚀 GO!
+        await send_photo(app, "Black and White Illustrative Fashion Banner_20260430_195312_0000.png")
 
-👠 ROUPEIRO • ARMARIO • DRESSING
-❤️ 10 FAVS
-⏰ 21:00 – 22:00""")
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca o link do teu PERFIL
+
+❤️ Dá 10 favoritos em CADA perfil
+❗ É obrigatório interagir com TODOS
+
+⏰ Cumpre o horário""")
 
 # ------------------ NOTURNAS ------------------
 
