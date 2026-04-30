@@ -84,7 +84,8 @@ async def go_21(app):
 🔗 5 LINKS • ENLACES • LIENS
 ♥️ 5 FAVS
 ⏰ 21:00 – 22:00""")
-     # RESTO DOS DIAS → ROUPEIRO (imagem + texto)
+     
+    # RESTO DOS DIAS → ROUPEIRO (imagem + texto)
     else:
         await send_photo(app, "Black and White Illustrative Fashion Banner_20260430_195312_0000.png")
 
