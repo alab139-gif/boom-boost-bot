@@ -113,12 +113,18 @@ async def go_noturna_util(app):
 async def go_noturna_fds(app):
     hoje = datetime.now().date()
     dia = datetime.now().weekday()
-    if dia in [4, 5] or is_eve_of_holiday(hoje):
-        await send_msg(app, """🚀 GO!
 
-🔗 ROUPEIRO • ARMARIO • DRESSING
-♥️ 10 FAVS
-⏰ 23:30 – 10:30""")
+    if dia in [4, 5] or is_eve_of_holiday(hoje):
+        await send_photo(app, "Purple and White Illustrated Krishna Janmashtami Banner Landscape_20260430_230329_0000.png")
+
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca o link do teu PERFIL
+
+❤️ Dá 10 favoritos em CADA perfil
+❗ É obrigatório interagir com TODOS
+
+⏰ Cumpre o horário""")
 
 async def stop_noturna_util(app):
     hoje = datetime.now().date()
