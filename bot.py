@@ -26,9 +26,14 @@ async def send_msg(app, text):
     )
 
 async def stop(app):
-    await send_msg(app, """🛑 STOP 🔗
+    await send_photo(app, "Gold and Black Elegant Thank You Banner Landscape_20260501_001006_0000.png")
 
-🙏🏻🫶🏻""")
+    await asyncio.sleep(2)
+
+    await send_msg(app, """🚨 Deixa tudo em ordem
+
+🫶🏻 Obrigada pela participação  
+👋🏻 Até à próxima""")
 
 # ------------------ 12:30 (DIAS ÚTEIS) ------------------
 
