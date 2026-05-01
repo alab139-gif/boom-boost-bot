@@ -83,12 +83,39 @@ async def stop_1800(app):
 
 async def go_21(app):
     dia = datetime.now().weekday()
-    if dia in [0, 2, 4]:
-        await send_msg(app, """🚀 GO!
 
-🔗 5 LINKS • ENLACES • LIENS
-♥️ 5 FAVS
-⏰ 21:00 – 22:00""")
+    if dia in [0, 2, 4]:
+        await send_photo(app, "Banner parabéns formandos elegante dourado e azul_20260501_122812_0000.png")
+
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca 5 links de ARTIGOS (não perfil)
+⚠️ 1 link por linha na mesma mensagem
+
+1️⃣ https://vinted.pt/...
+2️⃣ https://vinted.pt/...
+3️⃣ https://vinted.pt/...
+4️⃣ https://vinted.pt/...
+5️⃣ https://vinted.pt/...
+
+❤️ Abre cada link e dá 1 favorito
+❗ Interage com TODOS os participantes (obrigatório)
+
+🚨 Se algum artigo já tiver like, reage com: 👀
+
+⏰ Cumpre o horário""")
+
+    else:
+        await send_photo(app, "Black and White Illustrative Fashion Banner_20260430_195312_0000.png")
+
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca o link do teu PERFIL
+
+❤️ Dá 10 favoritos em CADA perfil
+❗ É obrigatório interagir com TODOS
+
+⏰ Cumpre o horário""")
      
     # RESTO DOS DIAS → ROUPEIRO (imagem + texto)
     else:
