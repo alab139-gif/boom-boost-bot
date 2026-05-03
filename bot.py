@@ -27,7 +27,7 @@ async def send_msg(app, text):
     )
 
 async def send_photo(app, photo_path):
-    base_dir = "/home/liaabrandao/boom-boost-bot"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(base_dir, photo_path)
 
     if not os.path.exists(full_path):
