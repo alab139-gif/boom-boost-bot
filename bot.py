@@ -26,6 +26,7 @@ async def send_msg(app, text):
         message_thread_id=THREAD_ID
     )
 
+# ✅ FUNÇÃO CORRIGIDA
 async def send_photo(app, photo_path):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(base_dir, photo_path)
@@ -35,11 +36,11 @@ async def send_photo(app, photo_path):
         return
 
     with open(full_path, "rb") as photo:
-    await app.bot.send_document(
-        chat_id=CHAT_ID,
-        document=photo,
-        message_thread_id=THREAD_ID
-    )
+        await app.bot.send_document(
+            chat_id=CHAT_ID,
+            document=photo,
+            message_thread_id=THREAD_ID
+        )
 
 async def stop(app):
     await send_photo(app, "Stop.png")
