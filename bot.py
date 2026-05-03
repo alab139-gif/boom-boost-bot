@@ -25,8 +25,13 @@ async def send_msg(app, text):
         message_thread_id=THREAD_ID
     )
 
+import os
+
 async def send_photo(app, photo_path):
-    with open(photo_path, "rb") as photo:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(base_dir, photo_path)
+
+    with open(full_path, "rb") as photo:
         await app.bot.send_photo(
             chat_id=CHAT_ID,
             photo=photo,
