@@ -13,8 +13,6 @@ THREAD_ID = 6364
 scheduler = AsyncIOScheduler(timezone="Europe/Lisbon")
 pt_holidays = holidays.Portugal()
 
-# ------------------ HELPERS ------------------
-
 def is_holiday_or_weekend(date):
     return date.weekday() >= 5 or date in pt_holidays
 
@@ -22,42 +20,32 @@ def is_eve_of_holiday(date):
     return (date + timedelta(days=1)) in pt_holidays
 
 async def send_msg(app, text):
-    try:
-        await app.bot.send_message(
-            chat_id=CHAT_ID,
-            text=text,
-            message_thread_id=THREAD_ID
-        )
-        print("✅ Texto enviado")
-    except Exception as e:
-        print(f"❌ Erro ao enviar texto: {e}")
+    await app.bot.send_message(
+        chat_id=CHAT_ID,
+        text=text,
+        message_thread_id=THREAD_ID
+    )
 
 async def send_photo(app, photo_path):
-    try:
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        full_path = os.path.join(base_dir, photo_path)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(base_dir, photo_path)
 
-        print(f"📸 A tentar enviar: {full_path}")
+    if not os.path.exists(full_path):
+        print(f"❌ Imagem não encontrada: {full_path}")
+        return
 
-        if not os.path.exists(full_path):
-            print("❌ IMAGEM NÃO ENCONTRADA")
-            return
-
-        with open(full_path, "rb") as photo:
-            await app.bot.send_photo(
-                chat_id=CHAT_ID,
-                photo=photo,
-                message_thread_id=THREAD_ID
-            )
-
-        print("✅ Imagem enviada")
-
-    except Exception as e:
-        print(f"❌ Erro ao enviar imagem: {e}")
+    with open(full_path, "rb") as photo:
+        await app.bot.send_photo(
+            chat_id=CHAT_ID,
+            photo=photo,
+            message_thread_id=THREAD_ID
+        )
 
 async def stop(app):
-    await send_photo(app, "Stop.png")
+    await send_photo(app, "stop.png")
+
     await asyncio.sleep(2)
+
     await send_msg(app, """🚨 Deixa tudo em ordem
 
 🫶🏻 Obrigada pela participação  
@@ -68,8 +56,10 @@ async def stop(app):
 async def go_1230(app):
     hoje = datetime.now().date()
     if not is_holiday_or_weekend(hoje):
-        await send_photo(app, "Roupeiro1230.png")
+        await send_photo(app, "roupeiro1230.png")
+
         await asyncio.sleep(2)
+
         await send_msg(app, """🔗 Coloca o link do teu PERFIL
 
 ❤️ Dá 5 favoritos em CADA perfil
@@ -88,7 +78,9 @@ async def go_1430(app):
     hoje = datetime.now().date()
     if is_holiday_or_weekend(hoje):
         await send_photo(app, "roupeiro1430.png")
+
         await asyncio.sleep(2)
+
         await send_msg(app, """🔗 Coloca o link do teu PERFIL
 
 ❤️ Dá 5 favoritos em CADA perfil
@@ -105,7 +97,9 @@ async def stop_1500(app):
 
 async def go_1730(app):
     await send_photo(app, "roupeiro1730.png")
+
     await asyncio.sleep(2)
+
     await send_msg(app, """🔗 Coloca o link do teu PERFIL
 
 ❤️ Dá 5 favoritos em CADA perfil
@@ -123,7 +117,9 @@ async def go_21(app):
 
     if dia in [0, 2, 4]:
         await send_photo(app, "5artigos.png")
+
         await asyncio.sleep(2)
+
         await send_msg(app, """🔗 Coloca 5 links de ARTIGOS (não perfil)
 ⚠️ 1 link por linha na mesma mensagem
 
@@ -139,9 +135,12 @@ async def go_21(app):
 🚨 Se algum artigo já tiver like, reage com: 👀
 
 ⏰ Cumpre o horário""")
+
     else:
         await send_photo(app, "roupeiro10favs_21horas.png")
+
         await asyncio.sleep(2)
+
         await send_msg(app, """🔗 Coloca o link do teu PERFIL
 
 ❤️ Dá 10 favoritos em CADA perfil
@@ -157,7 +156,9 @@ async def go_noturna_util(app):
 
     if dia in [0, 1, 2, 3, 6] and not is_eve_of_holiday(hoje):
         await send_photo(app, "roupeiro5favs_23horas.png")
+
         await asyncio.sleep(2)
+
         await send_msg(app, """🔗 Coloca o link do teu PERFIL
 
 ❤️ Dá 5 favoritos em CADA perfil
@@ -165,13 +166,16 @@ async def go_noturna_util(app):
 
 ⏰ Cumpre o horário""")
 
+
 async def go_noturna_fds(app):
     hoje = datetime.now().date()
     dia = datetime.now().weekday()
 
     if dia in [4, 5] or is_eve_of_holiday(hoje):
         await send_photo(app, "Roupeiro10favs_23h30.png")
+
         await asyncio.sleep(2)
+
         await send_msg(app, """🔗 Coloca o link do teu PERFIL
 
 ❤️ Dá 10 favoritos em CADA perfil
@@ -183,7 +187,6 @@ async def stop_noturna_util(app):
     hoje = datetime.now().date()
     ontem = hoje - timedelta(days=1)
     dia_ontem = ontem.weekday()
-
     if dia_ontem in [0, 1, 2, 3, 6] and not is_eve_of_holiday(ontem):
         await stop(app)
 
@@ -191,7 +194,6 @@ async def stop_noturna_fds(app):
     hoje = datetime.now().date()
     ontem = hoje - timedelta(days=1)
     dia_ontem = ontem.weekday()
-
     if dia_ontem in [4, 5] or is_eve_of_holiday(ontem):
         await stop(app)
 
@@ -217,10 +219,9 @@ async def main():
     scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
     scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
 
-    if not scheduler.running:
-        scheduler.start()
+    scheduler.start()
 
-    print("🤖 Bot a correr...")
+    print("Bot a correr...")
 
     async with app:
         await app.start()
