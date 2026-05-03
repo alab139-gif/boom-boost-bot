@@ -27,7 +27,7 @@ async def send_msg(app, text):
     )
 
 async def send_photo(app, photo_path):
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    base_dir = "/home/liaabrandao/boom-boost-bot"
     full_path = os.path.join(base_dir, photo_path)
 
     if not os.path.exists(full_path):
@@ -42,7 +42,7 @@ async def send_photo(app, photo_path):
         )
 
 async def stop(app):
-    await send_photo(app, "stop.png")
+    await send_photo(app, "Stop.png")
 
     await asyncio.sleep(2)
 
@@ -56,7 +56,7 @@ async def stop(app):
 async def go_1230(app):
     hoje = datetime.now().date()
     if not is_holiday_or_weekend(hoje):
-        await send_photo(app, "roupeiro1230.png")
+        await send_photo(app, "Roupeiro1230.png")
 
         await asyncio.sleep(2)
 
