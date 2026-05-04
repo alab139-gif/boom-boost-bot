@@ -36,14 +36,14 @@ async def send_photo(app, photo_path):
         return
 
     with open(full_path, "rb") as photo:
-        await app.bot.send_document(
-            chat_id=CHAT_ID,
-            document=photo,
-            message_thread_id=THREAD_ID
-        )
+    await app.bot.send_photo(
+        chat_id=CHAT_ID,
+        photo=photo,
+        message_thread_id=THREAD_ID
+    )
 
 async def stop(app):
-    await send_photo(app, "Stop.png")
+    await send_photo(app, "stop.jpg")
 
     await asyncio.sleep(2)
 
@@ -57,7 +57,7 @@ async def stop(app):
 async def go_1230(app):
     hoje = datetime.now().date()
     if not is_holiday_or_weekend(hoje):
-        await send_photo(app, "Roupeiro1230.png")
+        await send_photo(app, "roupeiro1230.jpg")
 
         await asyncio.sleep(2)
 
@@ -78,7 +78,7 @@ async def stop_1300(app):
 async def go_1430(app):
     hoje = datetime.now().date()
     if is_holiday_or_weekend(hoje):
-        await send_photo(app, "roupeiro1430.png")
+        await send_photo(app, "roupeiro1430.jpg")
 
         await asyncio.sleep(2)
 
@@ -97,7 +97,7 @@ async def stop_1500(app):
 # ------------------ 17:30 ------------------
 
 async def go_1730(app):
-    await send_photo(app, "roupeiro1730.png")
+    await send_photo(app, "roupeiro1730.jpg")
 
     await asyncio.sleep(2)
 
@@ -117,7 +117,7 @@ async def go_21(app):
     dia = datetime.now().weekday()
 
     if dia in [0, 2, 4]:
-        await send_photo(app, "5artigos.png")
+        await send_photo(app, "5artigos.jpg")
 
         await asyncio.sleep(2)
 
@@ -138,7 +138,7 @@ async def go_21(app):
 ⏰ Cumpre o horário""")
 
     else:
-        await send_photo(app, "roupeiro10favs_21horas.png")
+        await send_photo(app, "roupeiro10favs_21h.jpg")
 
         await asyncio.sleep(2)
 
@@ -156,7 +156,7 @@ async def go_noturna_util(app):
     dia = datetime.now().weekday()
 
     if dia in [0, 1, 2, 3, 6] and not is_eve_of_holiday(hoje):
-        await send_photo(app, "roupeiro5favs_23horas.png")
+        await send_photo(app, "roupeiro5favs_23h.jpg")
 
         await asyncio.sleep(2)
 
@@ -173,7 +173,7 @@ async def go_noturna_fds(app):
     dia = datetime.now().weekday()
 
     if dia in [4, 5] or is_eve_of_holiday(hoje):
-        await send_photo(app, "Roupeiro10favs_23h30.png")
+        await send_photo(app, "roupeiro10favs_23h30.jpg")
 
         await asyncio.sleep(2)
 
