@@ -21,10 +21,11 @@ def is_eve_of_holiday(date):
 
 async def send_msg(app, text):
     await app.bot.send_message(
-        chat_id=CHAT_ID,
-        text=text,
-        message_thread_id=THREAD_ID
-    )
+    chat_id=CHAT_ID,
+    text=text,
+    message_thread_id=THREAD_ID,
+    disable_web_page_preview=True
+)
 
 # ✅ CORRIGIDO
 async def send_photo(app, photo_path):
