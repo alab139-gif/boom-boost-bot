@@ -26,7 +26,7 @@ async def send_msg(app, text):
         message_thread_id=THREAD_ID
     )
 
-# ✅ FUNÇÃO CORRIGIDA
+# ✅ CORRIGIDO
 async def send_photo(app, photo_path):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(base_dir, photo_path)
@@ -36,11 +36,11 @@ async def send_photo(app, photo_path):
         return
 
     with open(full_path, "rb") as photo:
-    await app.bot.send_photo(
-        chat_id=CHAT_ID,
-        photo=photo,
-        message_thread_id=THREAD_ID
-    )
+        await app.bot.send_photo(
+            chat_id=CHAT_ID,
+            photo=photo,
+            message_thread_id=THREAD_ID
+        )
 
 async def stop(app):
     await send_photo(app, "stop.jpg")
@@ -166,7 +166,6 @@ async def go_noturna_util(app):
 ❗ É obrigatório interagir com TODOS
 
 ⏰ Cumpre o horário""")
-
 
 async def go_noturna_fds(app):
     hoje = datetime.now().date()
