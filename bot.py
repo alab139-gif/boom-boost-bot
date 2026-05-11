@@ -67,6 +67,8 @@ async def go_1230(app):
 ❤️ Dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS
 
+🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+
 ⏰ Cumpre o horário""")
 
 async def stop_1300(app):
@@ -88,6 +90,8 @@ async def go_1430(app):
 ❤️ Dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS
 
+🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+
 ⏰ Cumpre o horário""")
 
 async def stop_1500(app):
@@ -107,6 +111,8 @@ async def go_1730(app):
 ❤️ Dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS
 
+🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+
 ⏰ Cumpre o horário""")
 
 async def stop_1800(app):
@@ -123,7 +129,7 @@ async def go_21(app):
         await asyncio.sleep(2)
 
         await send_msg(app, """🔗 Coloca 5 links de ARTIGOS (não perfil)
-⚠️ 1 link por linha na mesma mensagem
+⚠️ 1 link por linha na mesma mensagem:
 
 1️⃣ https://vinted.pt/...
 2️⃣ https://vinted.pt/...
@@ -131,8 +137,8 @@ async def go_21(app):
 4️⃣ https://vinted.pt/...
 5️⃣ https://vinted.pt/...
 
-❤️ Abre cada link e dá 1 favorito
-❗ Interage com TODOS os participantes (obrigatório)
+❤️ Abre TODOS os links e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
 
 🚨 Se algum artigo já tiver like, reage com: 👀
 
@@ -148,6 +154,8 @@ async def go_21(app):
 ❤️ Dá 10 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS
 
+🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+
 ⏰ Cumpre o horário""")
 
 # ------------------ NOTURNAS ------------------
@@ -157,7 +165,7 @@ async def go_noturna_util(app):
     dia = datetime.now().weekday()
 
     if dia in [0, 1, 2, 3, 6] and not is_eve_of_holiday(hoje):
-        await send_photo(app, "roupeiro5favs_23h.jpg")
+        await send_photo(app, "roupeiro5favs_22h30.jpg")
 
         await asyncio.sleep(2)
 
@@ -166,6 +174,8 @@ async def go_noturna_util(app):
 ❤️ Dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS
 
+🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+
 ⏰ Cumpre o horário""")
 
 async def go_noturna_fds(app):
@@ -173,7 +183,7 @@ async def go_noturna_fds(app):
     dia = datetime.now().weekday()
 
     if dia in [4, 5] or is_eve_of_holiday(hoje):
-        await send_photo(app, "roupeiro10favs_23h30.jpg")
+        await send_photo(app, "roupeiro10favs_23h00.jpg")
 
         await asyncio.sleep(2)
 
@@ -181,6 +191,8 @@ async def go_noturna_fds(app):
 
 ❤️ Dá 10 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS
+
+🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
 
 ⏰ Cumpre o horário""")
 
@@ -198,6 +210,113 @@ async def stop_noturna_fds(app):
     if dia_ontem in [4, 5] or is_eve_of_holiday(ontem):
         await stop(app)
 
+# ------------------ TURBO ONE (DIAS ÚTEIS) ------------------
+
+async def go_turbo_one_util(app, photo_name):
+    hoje = datetime.now().date()
+
+    if not is_holiday_or_weekend(hoje):
+        await send_photo(app, photo_name)
+
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca 1 link de ARTIGO (não perfil)
+
+❤️ Abre TODOS os links e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
+
+🚨 Se algum artigo já tiver like, reage com: 👀
+
+⏰ Cumpre o horário""")
+
+# ------------------ TURBO DUO (DIAS ÚTEIS) ------------------
+
+async def go_turbo_duo_util(app):
+    hoje = datetime.now().date()
+
+    if not is_holiday_or_weekend(hoje):
+        await send_photo(app, "turbo_duo_dias_uteis_19h20.jpg")
+
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca 2 links de ARTIGOS (não perfil)
+⚠️ 1 link por linha na mesma mensagem:
+
+1️⃣ https://vinted.pt/...
+2️⃣ https://vinted.pt/...
+
+❤️ Abre TODOS os links e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
+
+🚨 Se algum artigo já tiver like, reage com: 👀
+
+⏰ Cumpre o horário""")
+
+# ------------------ TURBO ONE (FDS/FERIADOS) ------------------
+
+async def go_turbo_one_fds(app, photo_name):
+    hoje = datetime.now().date()
+
+    if is_holiday_or_weekend(hoje):
+        await send_photo(app, photo_name)
+
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca 1 link de ARTIGO
+
+❤️ Abre TODOS os links e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
+
+🚨 Se algum artigo já tiver like, reage com: 👀
+
+⏰ Cumpre o horário""")
+
+# ------------------ TURBO DUO (FDS/FERIADOS) ------------------
+
+async def go_turbo_duo_fds(app, photo_name):
+    hoje = datetime.now().date()
+
+    if is_holiday_or_weekend(hoje):
+        await send_photo(app, photo_name)
+
+        await asyncio.sleep(2)
+
+        await send_msg(app, """🔗 Coloca 2 links de ARTIGOS (não perfil)
+⚠️ 1 link por linha na mesma mensagem:
+
+1️⃣ https://vinted.pt/...
+2️⃣ https://vinted.pt/...
+
+❤️ Abre TODOS os links e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
+
+🚨 Se algum artigo já tiver like, reage com: 👀
+
+⏰ Cumpre o horário""")
+
+# ------------------ LEMBRETE 20:20 ------------------
+
+async def reminder_2020(app):
+    await send_msg(app, """Se queres MESMO vender, publica novos artigos ou republica os antigos (apaga e volta a publicar) ♻️🆕🔄
+
+A Vinted adora contas dinâmicas… e ainda mais os artigos recentes 🤫🚀
+
+Cereja no topo do bolo? Leva esses anúncios a jogo 🎮▶️😎""")
+
+# ------------------ STOPS TURBO ------------------
+
+async def stop_util(app):
+    hoje = datetime.now().date()
+
+    if not is_holiday_or_weekend(hoje):
+        await stop(app)
+
+async def stop_fds(app):
+    hoje = datetime.now().date()
+
+    if is_holiday_or_weekend(hoje):
+        await stop(app)
+
 # ------------------ MAIN ------------------
 
 async def main():
@@ -212,11 +331,123 @@ async def main():
     scheduler.add_job(go_1730, "cron", hour=17, minute=30, args=[app])
     scheduler.add_job(stop_1800, "cron", hour=18, minute=0, args=[app])
 
+    # ------------------ TURBO ONE (DIAS ÚTEIS) ------------------
+
+    scheduler.add_job(
+        go_turbo_one_util,
+        "cron",
+        hour=18,
+        minute=45,
+        args=[app, "turbo_one_dias_uteis_18h45.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_util,
+        "cron",
+        hour=20,
+        minute=0,
+        args=[app, "turbo_one_dias_uteis_20h00.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_util,
+        "cron",
+        hour=22,
+        minute=10,
+        args=[app, "turbo_one_dias_uteis_22h10.jpg"]
+    )
+
+    scheduler.add_job(stop_util, "cron", hour=18, minute=55, args=[app])
+
+    scheduler.add_job(stop_util, "cron", hour=20, minute=10, args=[app])
+
+    scheduler.add_job(reminder_2020, "cron", hour=20, minute=20, args=[app])
+
+    scheduler.add_job(stop_util, "cron", hour=22, minute=20, args=[app])
+
+    # ------------------ TURBO DUO (DIAS ÚTEIS) ------------------
+
+    scheduler.add_job(
+        go_turbo_duo_util,
+        "cron",
+        hour=19,
+        minute=20,
+        args=[app]
+    )
+
+    scheduler.add_job(stop_util, "cron", hour=19, minute=35, args=[app])
+
+# ------------------ TURBO ONE (FDS/FERIADOS) ------------------
+
+    scheduler.add_job(
+        go_turbo_one_fds,
+        "cron",
+        hour=11,
+        minute=0,
+        args=[app, "turbo_one_feriados_fds_11h00.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_fds,
+        "cron",
+        hour=15,
+        minute=30,
+        args=[app, "turbo_one_feriados_fds_15h30.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_fds,
+        "cron",
+        hour=16,
+        minute=45,
+        args=[app, "turbo_one_feriados_fds_16h45.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_fds,
+        "cron",
+        hour=18,
+        minute=30,
+        args=[app, "turbo_one_feriados_fds_18h30.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_fds,
+        "cron",
+        hour=19,
+        minute=20,
+        args=[app, "turbo_one_feriados_fds_19h20.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_fds,
+        "cron",
+        hour=22,
+        minute=15,
+        args=[app, "turbo_one_feriados_fds_22h15.jpg"]
+    )
+
+    scheduler.add_job(
+        go_turbo_one_fds,
+        "cron",
+        hour=22,
+        minute=35,
+        args=[app, "turbo_one_feriados_fds_22h35.jpg"]
+    )
+
+    scheduler.add_job(stop_fds, "cron", hour=11, minute=10, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=15, minute=40, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=16, minute=55, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=18, minute=40, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=19, minute=30, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=22, minute=25, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=22, minute=45, args=[app])
+
     scheduler.add_job(go_21, "cron", hour=21, minute=0, args=[app])
     scheduler.add_job(stop, "cron", hour=22, minute=0, args=[app])
 
     scheduler.add_job(go_noturna_util, "cron", hour=23, minute=0, args=[app])
-    scheduler.add_job(go_noturna_fds, "cron", hour=23, minute=30, args=[app])
+    scheduler.add_job(go_noturna_fds, "cron", hour=23, minute=00, args=[app])
     scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
     scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
 
