@@ -6,7 +6,7 @@ import holidays
 import os
 
 # 🔴 METE AQUI OS TEUS DADOS
-TOKEN = "8656939827:AAGxFebTouJhQtUVv8YrWkraI07dojvMzTw"
+TOKEN = "8656939827:AAEm9czEedV0PT3Hl6kfHJzKKGcm4L64Juk"
 CHAT_ID = -1003758317502
 THREAD_ID = 6364
 
@@ -443,10 +443,49 @@ async def main():
     scheduler.add_job(stop_fds, "cron", hour=22, minute=25, args=[app])
     scheduler.add_job(stop_fds, "cron", hour=22, minute=45, args=[app])
 
+# ------------------ TURBO DUO (FDS/FERIADOS) ------------------
+
+    scheduler.add_job(
+    go_turbo_duo_fds,
+    "cron",
+    hour=11,
+    minute=30,
+    args=[app, "turbo_duo_feriados_fds_11h30.jpg"]
+)
+
+    scheduler.add_job(
+    go_turbo_duo_fds,
+    "cron",
+    hour=16,
+    minute=0,
+    args=[app, "turbo_duo_feriados_fds_16h00.jpg"]
+)
+
+    scheduler.add_job(
+    go_turbo_duo_fds,
+    "cron",
+    hour=18,
+    minute=50,
+    args=[app, "turbo_duo_feriados_fds_18h50.jpg"]
+)
+
+    scheduler.add_job(
+    go_turbo_duo_fds,
+    "cron",
+    hour=19,
+    minute=40,
+    args=[app, "turbo_duo_feriados_fds_19h40.jpg"]
+)
+
+    scheduler.add_job(stop_fds, "cron", hour=11, minute=45, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=16, minute=15, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=19, minute=5, args=[app])
+    scheduler.add_job(stop_fds, "cron", hour=19, minute=55, args=[app])
+
     scheduler.add_job(go_21, "cron", hour=21, minute=0, args=[app])
     scheduler.add_job(stop, "cron", hour=22, minute=0, args=[app])
 
-    scheduler.add_job(go_noturna_util, "cron", hour=23, minute=0, args=[app])
+    scheduler.add_job(go_noturna_util, "cron", hour=22, minute=30, args=[app])
     scheduler.add_job(go_noturna_fds, "cron", hour=23, minute=00, args=[app])
     scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
     scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
