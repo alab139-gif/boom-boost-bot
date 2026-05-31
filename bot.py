@@ -160,7 +160,7 @@ async def stop_noturna_fds(app):
         await stop(app)
 
 
-# ------------------ LEMBRETE 20:20 ------------------
+# ------------------ LEMBRETE 2020 ------------------
 
 async def reminder_2020(app):
     await send_msg(app, """Se queres MESMO vender, publica novos artigos ou republica os antigos (apaga e volta a publicar) ♻️🆕🔄
@@ -189,8 +189,10 @@ async def main():
     scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
     scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
 
-    # ✅ CORRIGIDO: reminder_2020 agora está agendado
-    scheduler.add_job(reminder_2020, "cron", hour=20, minute=20, args=[app])
+    scheduler.add_job(reminder_2020, "cron", hour=11, minute=30, args=[app])
+    scheduler.add_job(reminder_2020, "cron", hour=16, minute=30, args=[app])
+    scheduler.add_job(reminder_2020, "cron", hour=19, minute=30, args=[app])
+    scheduler.add_job(reminder_2020, "cron", hour=22, minute=20, args=[app])
 
     scheduler.start()
     print("Bot a correr...")
