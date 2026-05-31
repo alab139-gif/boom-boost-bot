@@ -205,7 +205,6 @@ async def main():
             await asyncio.sleep(60)
 
 
-# ✅ CORRIGIDO: __name__ e "__main__" com underscores
 if __name__ == "__main__":
     asyncio.run(main())
     
