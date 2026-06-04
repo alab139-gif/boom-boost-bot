@@ -29,7 +29,6 @@ async def send_msg(app, text):
         disable_web_page_preview=True
     )
 
-# ✅ CORRIGIDO: __file__ com underscores
 async def send_photo(app, photo_path):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(base_dir, photo_path)
@@ -47,7 +46,7 @@ async def send_photo(app, photo_path):
 
 
 async def stop(app):
-    await send_photo(app, "stop.jpg")
+    await send_photo(app, "stop.png")
     await asyncio.sleep(2)
     await send_msg(app, """🚨 Confirma que deste os favoritos a cada um dos participantes desta sessão
 
@@ -55,50 +54,100 @@ async def stop(app):
 👋🏻 Até à próxima""")
 
 
-# ------------------ 12:00 (TODOS OS DIAS) ------------------
+# ------------------ 13:00 (DIAS ÚTEIS) ------------------
 
-async def go_1200(app):
-    await send_photo(app, "roupeiro5favs_12h00.jpg")
-    await asyncio.sleep(2)
-    await send_msg(app, """🔗 Cola o link do teu PERFIL
+async def go_1300(app):
+    hoje = datetime.now().date()
+    dia = datetime.now().weekday()
+    if dia < 5 and hoje not in pt_holidays:
+        await send_photo(app, "3links13h.png")
+        await asyncio.sleep(2)
+        await send_msg(app, """🔗 Partilha 3 links de ARTIGOS (não de perfil)
+⚠️ 1 link por linha na mesma mensagem:
 
-❤️ Dá 5 favoritos em CADA perfil
-❗ É obrigatório interagir com TODOS os perfis
+1️⃣ https://vinted.pt/...
+2️⃣ https://vinted.pt/...
+3️⃣ https://vinted.pt/...
 
-🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+❤️ Abre TODOS os links desta sessão e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
 
-⏰ Cumpre o horário""")
-
-async def stop_1400(app):
-    await stop(app)
-
-
-# ------------------ 17:00 (TODOS OS DIAS) ------------------
-
-async def go_1700(app):
-    await send_photo(app, "roupeiro5favs_17h00.jpg")
-    await asyncio.sleep(2)
-    await send_msg(app, """🔗 Cola o link do teu PERFIL
-
-❤️ Dá 5 favoritos em CADA perfil
-❗ É obrigatório interagir com TODOS os perfis
-
-🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+🚨 Se algum artigo já tiver like, reage com: 👀
 
 ⏰ Cumpre o horário""")
 
-async def stop_1900(app):
-    await stop(app)
+async def stop_1400_links(app):
+    hoje = datetime.now().date()
+    dia = datetime.now().weekday()
+    if dia < 5 and hoje not in pt_holidays:
+        await send_photo(app, "stop.png")
+        await asyncio.sleep(2)
+        await send_msg(app, """🚨 Confirma que deste os favoritos a cada um dos participantes desta sessão
+
+🫶🏻 Obrigada pela participação
+👋🏻 Até à próxima""")
 
 
-# ------------------ 20:00 (TODOS OS DIAS) ------------------
+# ------------------ 14:00 (FERIADOS, SÁB, DOM) ------------------
 
-async def go_2000(app):
-    await send_photo(app, "roupeiro10favs_20h00.jpg")
-    await asyncio.sleep(2)
-    await send_msg(app, """🔗 Cola o link do teu PERFIL
+async def go_1400_fds(app):
+    hoje = datetime.now().date()
+    dia = datetime.now().weekday()
+    if dia >= 5 or hoje in pt_holidays:
+        await send_photo(app, "3links14h.png")
+        await asyncio.sleep(2)
+        await send_msg(app, """🔗 Partilha 3 links de ARTIGOS (não de perfil)
+⚠️ 1 link por linha na mesma mensagem:
 
-❤️ Dá 10 favoritos em CADA perfil
+1️⃣ https://vinted.pt/...
+2️⃣ https://vinted.pt/...
+3️⃣ https://vinted.pt/...
+
+❤️ Abre TODOS os links desta sessão e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
+
+🚨 Se algum artigo já tiver like, reage com: 👀
+
+⏰ Cumpre o horário""")
+
+async def stop_1500_fds(app):
+    hoje = datetime.now().date()
+    dia = datetime.now().weekday()
+    if dia >= 5 or hoje in pt_holidays:
+        await send_photo(app, "stop.png")
+        await asyncio.sleep(2)
+        await send_msg(app, """🚨 Confirma que deste os favoritos a cada um dos participantes desta sessão
+
+🫶🏻 Obrigada pela participação
+👋🏻 Até à próxima""")
+
+
+# ------------------ 21:00 (ALTERNADO) ------------------
+
+async def go_2100(app):
+    dia = datetime.now().weekday()
+    if dia in [0, 2, 4]:  # Seg, Qua, Sex → 3 links
+        await send_photo(app, "3links21h.png")
+        await asyncio.sleep(2)
+        await send_msg(app, """🔗 Partilha 3 links de ARTIGOS (não de perfil)
+⚠️ 1 link por linha na mesma mensagem:
+
+1️⃣ https://vinted.pt/...
+2️⃣ https://vinted.pt/...
+3️⃣ https://vinted.pt/...
+
+❤️ Abre TODOS os links desta sessão e dá 1 favorito em cada um deles
+❗ É obrigatório interagir com TODOS
+
+🚨 Se algum artigo já tiver like, reage com: 👀
+
+⏰ Cumpre o horário""")
+    elif dia in [1, 3, 5, 6]:  # Ter, Qui, Sáb, Dom → perfil
+        await send_photo(app, "perfil5terquisabdom.png")
+        await asyncio.sleep(2)
+        await send_msg(app, """🔗 Cola o link do teu PERFIL
+
+❤️ Abre TODOS os links desta sessão e dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS os perfis
 
 🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
@@ -114,13 +163,13 @@ async def stop_2200(app):
 async def go_noturna_util(app):
     hoje = datetime.now().date()
     dia = datetime.now().weekday()
-    # Seg=0, Ter=1, Qua=2, Qui=3, Dom=6 — e não véspera de feriado
-    if dia in [0, 1, 2, 3, 6] and not is_eve_of_holiday(hoje):
-        await send_photo(app, "roupeiro5favs_22h30.jpg")
+    # Dom=6, Seg=0, Ter=1, Qua=2, Qui=3 — e não véspera de feriado
+    if dia in [6, 0, 1, 2, 3] and not is_eve_of_holiday(hoje):
+        await send_photo(app, "noturnauteis.png")
         await asyncio.sleep(2)
         await send_msg(app, """🔗 Cola o link do teu PERFIL
 
-❤️ Dá 5 favoritos em CADA perfil
+❤️ Abre TODOS os links desta sessão e dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS os perfis
 
 🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
@@ -130,13 +179,13 @@ async def go_noturna_util(app):
 async def go_noturna_fds(app):
     hoje = datetime.now().date()
     dia = datetime.now().weekday()
-    # Sex=4, Sáb=5 — ou véspera de feriado — ou o próprio dia é feriado
-    if dia in [4, 5] or is_eve_of_holiday(hoje) or is_holiday_or_weekend(hoje):
-        await send_photo(app, "roupeiro10favs_23h00.jpg")
+    # Sex=4, Sáb=5 — ou véspera de feriado (qualquer dia)
+    if dia in [4, 5] or is_eve_of_holiday(hoje):
+        await send_photo(app, "noturnaferiadosefds.png")
         await asyncio.sleep(2)
         await send_msg(app, """🔗 Cola o link do teu PERFIL
 
-❤️ Dá 10 favoritos em CADA perfil
+❤️ Abre TODOS os links desta sessão e dá 10 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS os perfis
 
 🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
@@ -155,14 +204,70 @@ async def stop_noturna_fds(app):
     hoje = datetime.now().date()
     ontem = hoje - timedelta(days=1)
     dia_ontem = ontem.weekday()
-    # ✅ CORRIGIDO: cobre Sex/Sáb, véspera de feriado, e feriados
-    if dia_ontem in [4, 5] or is_eve_of_holiday(ontem) or is_holiday_or_weekend(ontem):
+
+    # Espelha go_noturna_fds: Sex=4, Sáb=5 — ou véspera de feriado
+    if dia_ontem in [4, 5] or is_eve_of_holiday(ontem):
         await stop(app)
 
 
-# ------------------ LEMBRETE 2020 ------------------
+# ------------------ LEMBRETES ------------------
 
-async def reminder_2020(app):
+async def reminder_1300(app):
+    await send_msg(app, """🕐 Próxima sessão às 13:00
+
+🔗 Começa a preparar 3 links de artigos
+(de preferência renovados ♻️🆕)
+
+⏰ Marca um lembrete para não te esqueceres
+
+🚀🔥""")
+
+
+async def reminder_1400(app):
+    await send_msg(app, """🕑 Próxima sessão às 14:00
+
+🔗 Começa a preparar 3 links de artigos
+(de preferência renovados ♻️🆕)
+
+⏰ Marca um lembrete para não te esqueceres
+
+🚀🔥""")
+
+
+async def reminder_2100_links(app):
+    await send_msg(app, """🕘 Próxima sessão às 21:00
+
+🔗 Começa a preparar 3 links de artigos
+(de preferência renovados ♻️🆕)
+
+⏰ Marca um lembrete para não te esqueceres
+
+🚀🔥""")
+
+
+async def reminder_2100_profile(app):
+    await send_msg(app, """🕘 Próxima sessão às 21:00
+
+🔗 Começa a preparar o teu link de perfil
+(de preferência com artigos renovados ♻️🆕)
+
+⏰ Marca um lembrete para não te esqueceres
+
+🚀🔥""")
+
+
+async def reminder_2230(app):
+    await send_msg(app, """🕥 Próxima sessão às 22:30
+
+🔗 Começa a preparar o teu link de perfil
+(de preferência com artigos renovados ♻️🆕)
+
+⏰ Marca um lembrete para não te esqueceres
+
+🚀🔥""")
+
+
+async def reminder_vendas(app):
     await send_msg(app, """Se queres MESMO vender, publica novos artigos ou republica os antigos (apaga e volta a publicar) ♻️🆕🔄
 
 A Vinted adora contas dinâmicas… e ainda mais os artigos recentes 🤫🚀
@@ -175,36 +280,119 @@ Cereja no topo do bolo? Leva esses anúncios a jogo logo em seguida 🎮▶️�
 async def main():
     app = Application.builder().token(TOKEN).build()
 
-    scheduler.add_job(go_1200, "cron", hour=12, minute=0, args=[app])
-    scheduler.add_job(stop_1400, "cron", hour=14, minute=0, args=[app])
+    # SESSÕES
+    scheduler.add_job(go_1300, "cron", hour=13, minute=0, args=[app])
+    scheduler.add_job(stop_1400_links, "cron", hour=14, minute=0, args=[app])
 
-    scheduler.add_job(go_1700, "cron", hour=17, minute=0, args=[app])
-    scheduler.add_job(stop_1900, "cron", hour=19, minute=0, args=[app])
+    scheduler.add_job(go_1400_fds, "cron", hour=14, minute=0, args=[app])
+    scheduler.add_job(stop_1500_fds, "cron", hour=15, minute=0, args=[app])
 
-    scheduler.add_job(go_2000, "cron", hour=20, minute=0, args=[app])
+    scheduler.add_job(go_2100, "cron", hour=21, minute=0, args=[app])
     scheduler.add_job(stop_2200, "cron", hour=22, minute=0, args=[app])
 
     scheduler.add_job(go_noturna_util, "cron", hour=22, minute=30, args=[app])
-    scheduler.add_job(go_noturna_fds, "cron", hour=23, minute=0, args=[app])
+    scheduler.add_job(go_noturna_fds, "cron", hour=22, minute=30, args=[app])
+
     scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
     scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
 
-    scheduler.add_job(reminder_2020, "cron", hour=11, minute=30, args=[app])
-    scheduler.add_job(reminder_2020, "cron", hour=16, minute=30, args=[app])
-    scheduler.add_job(reminder_2020, "cron", hour=19, minute=30, args=[app])
-    scheduler.add_job(reminder_2020, "cron", hour=22, minute=20, args=[app])
+    # ---------- LEMBRETES ----------
+
+    # almoço úteis
+    scheduler.add_job(
+        reminder_1300,
+        "cron",
+        hour=12,
+        minute=30,
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas,
+        "cron",
+        hour=12,
+        minute=40,
+        args=[app]
+    )
+
+    # almoço fins de semana / feriados
+    scheduler.add_job(
+        reminder_1400,
+        "cron",
+        hour=13,
+        minute=30,
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas,
+        "cron",
+        hour=13,
+        minute=40,
+        args=[app]
+    )
+
+    # sessão 21h → links
+    scheduler.add_job(
+        reminder_2100_links,
+        "cron",
+        hour=20,
+        minute=30,
+        day_of_week="mon,wed,fri",
+        args=[app]
+    )
+
+    # sessão 21h → perfil
+    scheduler.add_job(
+        reminder_2100_profile,
+        "cron",
+        hour=20,
+        minute=30,
+        day_of_week="tue,thu,sat,sun",
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas,
+        "cron",
+        hour=20,
+        minute=40,
+        args=[app]
+    )
+
+    # noturna
+    scheduler.add_job(
+        reminder_2230,
+        "cron",
+        hour=22,
+        minute=15,
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas,
+        "cron",
+        hour=22,
+        minute=20,
+        args=[app]
+    )
 
     scheduler.start()
+
     print("Bot a correr...")
 
-    async with app:
-        await app.start()
-        await app.updater.start_polling()
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
 
-        while True:
-            await asyncio.sleep(60)
+    try:
+        await asyncio.Event().wait()
+
+    finally:
+        await app.updater.stop()
+        await app.stop()
+        await app.shutdown()
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-    
