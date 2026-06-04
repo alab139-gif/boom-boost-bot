@@ -215,8 +215,7 @@ async def stop_noturna_fds(app):
 async def reminder_1300(app):
     await send_msg(app, """🕐 Próxima sessão às 13:00
 
-🔗 Começa a preparar 3 links de artigos
-(de preferência renovados ♻️🆕)
+🔗 Começa a preparar 3 links de artigos (de preferência renovados ♻️🆕)
 
 ⏰ Marca um lembrete para não te esqueceres
 
@@ -226,8 +225,7 @@ async def reminder_1300(app):
 async def reminder_1400(app):
     await send_msg(app, """🕑 Próxima sessão às 14:00
 
-🔗 Começa a preparar 3 links de artigos
-(de preferência renovados ♻️🆕)
+🔗 Começa a preparar 3 links de artigos (de preferência renovados ♻️🆕)
 
 ⏰ Marca um lembrete para não te esqueceres
 
@@ -237,8 +235,7 @@ async def reminder_1400(app):
 async def reminder_2100_links(app):
     await send_msg(app, """🕘 Próxima sessão às 21:00
 
-🔗 Começa a preparar 3 links de artigos
-(de preferência renovados ♻️🆕)
+🔗 Começa a preparar 3 links de artigos (de preferência renovados ♻️🆕)
 
 ⏰ Marca um lembrete para não te esqueceres
 
@@ -248,8 +245,7 @@ async def reminder_2100_links(app):
 async def reminder_2100_profile(app):
     await send_msg(app, """🕘 Próxima sessão às 21:00
 
-🔗 Começa a preparar o teu link de perfil
-(de preferência com artigos renovados ♻️🆕)
+🔗 Começa a preparar o teu link de perfil (de preferência com artigos renovados ♻️🆕)
 
 ⏰ Marca um lembrete para não te esqueceres
 
@@ -259,8 +255,7 @@ async def reminder_2100_profile(app):
 async def reminder_2230(app):
     await send_msg(app, """🕥 Próxima sessão às 22:30
 
-🔗 Começa a preparar o teu link de perfil
-(de preferência com artigos renovados ♻️🆕)
+🔗 Começa a preparar o teu link de perfil (de preferência com artigos renovados ♻️🆕)
 
 ⏰ Marca um lembrete para não te esqueceres
 
