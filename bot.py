@@ -48,7 +48,7 @@ async def send_photo(app, photo_path):
 async def stop(app):
     await send_photo(app, "stop.png")
     await asyncio.sleep(2)
-    await send_msg(app, """🚨 Confirma que deste os favoritos a cada um dos participantes desta sessão
+    await send_msg(app, """⚠️ ATENÇÃO: confirma que deste os favoritos a cada um dos participantes desta sessão
 
 🫶🏻 Obrigada pela participação
 👋🏻 Até à próxima""")
@@ -58,8 +58,7 @@ async def stop(app):
 
 async def go_1300(app):
     hoje = datetime.now().date()
-    dia = datetime.now().weekday()
-    if dia < 5 and hoje not in pt_holidays:
+    if not is_holiday_or_weekend(hoje):
         await send_photo(app, "3links13h.png")
         await asyncio.sleep(2)
         await send_msg(app, """🔗 Partilha 3 links de ARTIGOS (não de perfil)
@@ -72,17 +71,18 @@ async def go_1300(app):
 ❤️ Abre TODOS os links desta sessão e dá 1 favorito em cada um deles
 ❗ É obrigatório interagir com TODOS
 
-🚨 Se algum artigo já tiver like, reage com: 👀
+ℹ️ As reações (emojis) no Telegram são opcionais
+🚨 Exceto nos jogos de artigos, em que é OBRIGATÓRIO reagir com 👀, SE algum dos artigos já tiver o teu favorito (mesmo que consigas dar favoritos normalmente nos restantes)
+👀 As visualizações também ajudam muito o algoritmo
 
 ⏰ Cumpre o horário""")
 
 async def stop_1400_links(app):
     hoje = datetime.now().date()
-    dia = datetime.now().weekday()
-    if dia < 5 and hoje not in pt_holidays:
+    if not is_holiday_or_weekend(hoje):
         await send_photo(app, "stop.png")
         await asyncio.sleep(2)
-        await send_msg(app, """🚨 Confirma que deste os favoritos a cada um dos participantes desta sessão
+        await send_msg(app, """⚠️ ATENÇÃO: confirma que deste os favoritos a cada um dos participantes desta sessão
 
 🫶🏻 Obrigada pela participação
 👋🏻 Até à próxima""")
@@ -92,8 +92,8 @@ async def stop_1400_links(app):
 
 async def go_1400_fds(app):
     hoje = datetime.now().date()
-    dia = datetime.now().weekday()
-    if dia >= 5 or hoje in pt_holidays:
+
+    if is_holiday_or_weekend(hoje):
         await send_photo(app, "3links14h.png")
         await asyncio.sleep(2)
         await send_msg(app, """🔗 Partilha 3 links de ARTIGOS (não de perfil)
@@ -106,17 +106,19 @@ async def go_1400_fds(app):
 ❤️ Abre TODOS os links desta sessão e dá 1 favorito em cada um deles
 ❗ É obrigatório interagir com TODOS
 
-🚨 Se algum artigo já tiver like, reage com: 👀
+ℹ️ As reações (emojis) no Telegram são opcionais
+🚨 Exceto nos jogos de artigos, em que é OBRIGATÓRIO reagir com 👀, SE algum dos artigos já tiver o teu favorito (mesmo que consigas dar favoritos normalmente nos restantes)
+👀 As visualizações também ajudam muito o algoritmo
 
 ⏰ Cumpre o horário""")
 
 async def stop_1500_fds(app):
     hoje = datetime.now().date()
-    dia = datetime.now().weekday()
-    if dia >= 5 or hoje in pt_holidays:
+    
+    if is_holiday_or_weekend(hoje):
         await send_photo(app, "stop.png")
         await asyncio.sleep(2)
-        await send_msg(app, """🚨 Confirma que deste os favoritos a cada um dos participantes desta sessão
+        await send_msg(app, """⚠️ ATENÇÃO: confirma que deste os favoritos a cada um dos participantes desta sessão
 
 🫶🏻 Obrigada pela participação
 👋🏻 Até à próxima""")
@@ -139,7 +141,9 @@ async def go_2100(app):
 ❤️ Abre TODOS os links desta sessão e dá 1 favorito em cada um deles
 ❗ É obrigatório interagir com TODOS
 
-🚨 Se algum artigo já tiver like, reage com: 👀
+ℹ️ As reações (emojis) no Telegram são opcionais
+🚨 Exceto nos jogos de artigos, em que é OBRIGATÓRIO reagir com 👀, SE algum dos artigos já tiver o teu favorito (mesmo que consigas dar favoritos normalmente nos restantes)
+👀 As visualizações também ajudam muito o algoritmo
 
 ⏰ Cumpre o horário""")
     elif dia in [1, 3, 5, 6]:  # Ter, Qui, Sáb, Dom → perfil
@@ -150,7 +154,15 @@ async def go_2100(app):
 ❤️ Abre TODOS os links desta sessão e dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS os perfis
 
-🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+ℹ️ As reações (emojis) no Telegram são opcionais
+
+🚨 Se algum perfil não tiver artigos disponíveis suficientes para completares os favoritos:
+
+🅰️ Cria um conjunto com os artigos em falta e envia esta mensagem: "🚀"
+
+OU
+
+🅱️ Se faltar apenas 1 favorito, envia esta mensagem: "🚀" num artigo à tua escolha
 
 ⏰ Cumpre o horário""")
 
@@ -172,7 +184,15 @@ async def go_noturna_util(app):
 ❤️ Abre TODOS os links desta sessão e dá 5 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS os perfis
 
-🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+ℹ️ As reações (emojis) no Telegram são opcionais
+
+🚨 Se algum perfil não tiver artigos disponíveis suficientes para completares os favoritos:
+
+🅰️ Cria um conjunto com os artigos em falta e envia esta mensagem: "🚀"
+
+OU
+
+🅱️ Se faltar apenas 1 favorito, envia esta mensagem: "🚀" num artigo à tua escolha
 
 ⏰ Cumpre o horário""")
 
@@ -188,7 +208,15 @@ async def go_noturna_fds(app):
 ❤️ Abre TODOS os links desta sessão e dá 10 favoritos em CADA perfil
 ❗ É obrigatório interagir com TODOS os perfis
 
-🚨 Se já não tiveres favoritos suficientes para dar (perfil cheio com os teus ❤️), cria um conjunto com o número de artigos em falta
+ℹ️ As reações (emojis) no Telegram são opcionais
+
+🚨 Se algum perfil não tiver artigos disponíveis suficientes para completares os favoritos:
+
+🅰️ Cria um conjunto com os artigos em falta e envia esta mensagem: "🚀"
+
+OU
+
+🅱️ Se faltar apenas 1 favorito, envia esta mensagem: "🚀" num artigo à tua escolha
 
 ⏰ Cumpre o horário""")
 
@@ -213,7 +241,10 @@ async def stop_noturna_fds(app):
 # ------------------ LEMBRETES ------------------
 
 async def reminder_1300(app):
-    await send_msg(app, """🕐 Próxima sessão às 13:00
+    hoje = datetime.now().date()
+
+    if not is_holiday_or_weekend(hoje):
+        await send_msg(app, """🕐 Próxima sessão às 13:00
 
 🔗 Começa a preparar 3 links de artigos (de preferência renovados ♻️🆕)
 
@@ -223,7 +254,10 @@ async def reminder_1300(app):
 
 
 async def reminder_1400(app):
-    await send_msg(app, """🕑 Próxima sessão às 14:00
+    hoje = datetime.now().date()
+
+    if is_holiday_or_weekend(hoje):
+        await send_msg(app, """🕑 Próxima sessão às 14:00
 
 🔗 Começa a preparar 3 links de artigos (de preferência renovados ♻️🆕)
 
@@ -269,6 +303,16 @@ A Vinted adora contas dinâmicas… e ainda mais os artigos recentes 🤫🚀
 
 Cereja no topo do bolo? Leva esses anúncios a jogo logo em seguida 🎮▶️😎""")
 
+
+async def reminder_vendas_fds(app):
+    hoje = datetime.now().date()
+
+    if is_holiday_or_weekend(hoje):
+        await send_msg(app, """Se queres MESMO vender, publica novos artigos ou republica os antigos (apaga e volta a publicar) ♻️🆕🔄
+
+A Vinted adora contas dinâmicas… e ainda mais os artigos recentes 🤫🚀
+
+Cereja no topo do bolo? Leva esses anúncios a jogo logo em seguida 🎮▶️😎""")
 
 # ------------------ MAIN ------------------
 
@@ -320,7 +364,7 @@ async def main():
     )
 
     scheduler.add_job(
-        reminder_vendas,
+        reminder_vendas_fds,
         "cron",
         hour=13,
         minute=40,
