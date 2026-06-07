@@ -297,7 +297,10 @@ async def reminder_2230(app):
 
 
 async def reminder_vendas(app):
-    await send_msg(app, """Se queres MESMO vender, publica novos artigos ou republica os antigos (apaga e volta a publicar) ♻️🆕🔄
+    hoje = datetime.now().date()
+
+    if not is_holiday_or_weekend(hoje):
+        await send_msg(app, """Se queres MESMO vender, publica novos artigos ou republica os antigos (apaga e volta a publicar) ♻️🆕🔄
 
 A Vinted adora contas dinâmicas… e ainda mais os artigos recentes 🤫🚀
 
@@ -324,6 +327,117 @@ async def main():
     scheduler.add_job(stop_1400_links, "cron", hour=14, minute=0, args=[app])
 
     scheduler.add_job(go_1400_fds, "cron", hour=14, minute=0, args=[app])
+    scheduler.add_job(stop_1500_fds, "cron", hour=15, minute=0, args=[app])
+
+    scheduler.add_job(go_2100, "cron", hour=21, minute=0, args=[app])
+    scheduler.add_job(stop_2200, "cron", hour=22, minute=0, args=[app])
+
+    scheduler.add_job(go_noturna_util, "cron", hour=22, minute=30, args=[app])
+    scheduler.add_job(go_noturna_fds, "cron", hour=22, minute=30, args=[app])
+
+    scheduler.add_job(stop_noturna_util, "cron", hour=9, minute=0, args=[app])
+    scheduler.add_job(stop_noturna_fds, "cron", hour=10, minute=30, args=[app])
+
+    # ---------- LEMBRETES ----------
+
+    # almoço úteis
+    scheduler.add_job(
+        reminder_1300,
+        "cron",
+        hour=12,
+        minute=30,
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas,
+        "cron",
+        hour=12,
+        minute=40,
+        args=[app]
+    )
+
+    # almoço fins de semana / feriados
+    scheduler.add_job(
+        reminder_1400,
+        "cron",
+        hour=13,
+        minute=30,
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas_fds,
+        "cron",
+        hour=13,
+        minute=40,
+        args=[app]
+    )
+
+    # sessão 21h → links
+    scheduler.add_job(
+        reminder_2100_links,
+        "cron",
+        hour=20,
+        minute=30,
+        day_of_week="mon,wed,fri",
+        args=[app]
+    )
+
+    # sessão 21h → perfil
+    scheduler.add_job(
+        reminder_2100_profile,
+        "cron",
+        hour=20,
+        minute=30,
+        day_of_week="tue,thu,sat,sun",
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas,
+        "cron",
+        hour=20,
+        minute=40,
+        args=[app]
+    )
+
+    # noturna
+    scheduler.add_job(
+        reminder_2230,
+        "cron",
+        hour=22,
+        minute=15,
+        args=[app]
+    )
+
+    scheduler.add_job(
+        reminder_vendas,
+        "cron",
+        hour=22,
+        minute=20,
+        args=[app]
+    )
+
+    scheduler.start()
+
+    print("Bot a correr...")
+
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    try:
+        await asyncio.Event().wait()
+
+    finally:
+        await app.updater.stop()
+        await app.stop()
+        await app.shutdown()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())=0, args=[app])
     scheduler.add_job(stop_1500_fds, "cron", hour=15, minute=0, args=[app])
 
     scheduler.add_job(go_2100, "cron", hour=21, minute=0, args=[app])
